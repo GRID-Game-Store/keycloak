@@ -1,26 +1,10 @@
 
 /.idea/
-# coverage
-theme-grid/coverage
-
-# build release
-theme-grid/build/Release
-
-# Dependency directories
-/theme-grid/node_modules
 
 
+theme-grid/node_modules
 
 
-# Optional REPL history
-/theme-grid/node_repl_history
-
-theme-grid/.vscode
-
-theme-grid/.DS_Store
-
-/theme-grid/dist
-
-/theme-grid/build_keycloak
-/theme-grid/build
-/theme-grid/storybook-static
+theme-grid/build_keycloak
+theme-grid/build
+theme-grid/storybook-static
