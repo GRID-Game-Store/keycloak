@@ -682,7 +682,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "AFUjH2a0aunmggelvnIXOrlpRujHDWgN",
       "redirectUris": [
         "http://localhost:8082/*"
       ],
