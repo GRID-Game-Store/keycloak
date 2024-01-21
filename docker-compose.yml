@@ -11,7 +11,7 @@ services:
       - "8084:8080"
     depends_on:
       - keycloak-db
-    command: -v start-dev --import-realm
+    command: -v start-dev --import-realm --features=account3,declarative-user-profile
     volumes:
       - ./imports:/opt/keycloak/data/import/
   keycloak-db:
