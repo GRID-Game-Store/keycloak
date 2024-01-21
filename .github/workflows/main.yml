@@ -10,9 +10,7 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v1
-    - name: Set theme version in GitHub .ENV
-      run: echo "GITHUB_VERSION=$(cat package.json | jq -r '.version')" >> $GITHUB_ENV
-    - run: echo ${{ env.GITHUB_VERSION }} 
+
     
     
   build:
@@ -22,6 +20,9 @@ jobs:
         run:
           working-directory: ./theme-grid
       steps:
+      - name: Set theme version in GitHub .ENV
+        run: echo "GITHUB_VERSION=$(cat package.json | jq -r '.version')" >> $GITHUB_ENV
+      - run: echo ${{ env.GITHUB_VERSION }} 
       - name: Install packages  
         run: npm i
       - name: Build JS files
