@@ -20,9 +20,6 @@ jobs:
         run:
           working-directory: ./theme-grid
       steps:
-      - name: Set theme version in GitHub .ENV
-        run: echo "GITHUB_VERSION=$(npm pkg get version --workspaces=false | tr -d \")" >> $GITHUB_ENV
-      - run: echo ${{ env.GITHUB_VERSION }} 
       - name: Install packages  
         run: npm i
       - name: Build JS files
@@ -45,8 +42,7 @@ jobs:
         run: npm pkg get version
         id: get-version
       - name: Set theme version in GitHub .ENV
-        run: echo "GITHUB_VERSION=$(echo ${{ steps.get-version.outputs.stdout }} | sed 's/\"//g')" >> $GITHUB_ENV
-      - run: echo ${{ env.GITHUB_VERSION }} 
+        run: echo "GITHUB_VERSION=$(npm pkg get version --workspaces=false | tr -d \")" >> $GITHUB_ENV 
       - uses: softprops/action-gh-release@v1
         with:
           name: Release v${{ env.GITHUB_VERSION }}
