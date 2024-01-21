@@ -10,9 +10,9 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v1
-    - uses: battila7/get-version-action@v2
-    - run: echo ${{ steps.get_version.outputs.version }}
-    - run: echo ${{ steps.get_version.outputs.version-without-v }}
+    - name: Set theme version in GitHub .ENV
+      run: echo "GITHUB_VERSION=$(cat package.json | jq -r '.version')" >> $GITHUB_ENV
+    - run: echo ${{ env.GITHUB_VERSION }} 
     
     
   build:
