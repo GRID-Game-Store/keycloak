@@ -4,7 +4,7 @@ import Fallback, { type PageProps } from "keycloakify/login";
 import type { KcContext } from "./kcContext";
 import { useI18n } from "./i18n";
 import Template from "./Template";
-
+import { Button, ButtonGroup, ChakraProvider } from '@chakra-ui/react'
 const Login = lazy(() => import("./pages/Login"));
 // If you can, favor register-user-profile.ftl over register.ftl, see: https://docs.keycloakify.dev/realtime-input-validation
 const Register = lazy(() => import("./pages/Register"));
@@ -41,6 +41,7 @@ export default function KcApp(props: { kcContext: KcContext; }) {
     */
 
     return (
+        
         <Suspense>
             {(() => {
                 switch (kcContext.pageId) {

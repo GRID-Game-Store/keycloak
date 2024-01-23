@@ -6,7 +6,9 @@ services:
     image: quay.io/keycloak/keycloak:23.0.4
     env_file:
     - imports/keycloak.env
-
+    build:
+      context: ../../..
+      dockerfile: Dockerfile 
     ports:
       - "8084:8080"
     depends_on:

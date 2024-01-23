@@ -2,6 +2,8 @@ import { createRoot } from "react-dom/client";
 import { StrictMode, lazy, Suspense } from "react";
 import { kcContext as kcLoginThemeContext } from "./keycloak-theme/login/kcContext";
 import { kcContext as kcAccountThemeContext } from "./keycloak-theme/account/kcContext";
+import { ChakraProvider } from "@chakra-ui/react/dist/chakra-provider";
+import { Button } from "@chakra-ui/react";
 
 const KcLoginThemeApp = lazy(() => import("./keycloak-theme/login/KcApp"));
 const KcAccountThemeApp = lazy(() => import("./keycloak-theme/account/KcApp"));
