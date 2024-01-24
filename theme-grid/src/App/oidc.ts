@@ -6,9 +6,9 @@ import { z } from "zod";
 
 //On older Keycloak version you need the /auth (e.g: http://localhost:8080/auth)
 //On newer version you must remove it (e.g: http://localhost:8080 )
-const keycloakUrl = "https://auth.code.gouv.fr/auth";
-const keycloakRealm = "keycloakify";
-const keycloakClientId= "starter";
+const keycloakUrl = "http://localhost:8084";
+const keycloakRealm = "GRID";
+const keycloakClientId= "login-app";
 
 export const { OidcProvider } = createOidcProvider({
     issuerUri: `${keycloakUrl}/realms/${keycloakRealm}`,

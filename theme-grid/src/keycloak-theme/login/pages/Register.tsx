@@ -94,6 +94,7 @@ export default function Register(props: PageProps<Extract<KcContext, { pageId: "
                             <label htmlFor="username" className={getClassName("kcLabelClass")}>
                                 {msg("username")}
                             </label>
+                            
                         </div>
                         <div className={getClassName("kcInputWrapperClass")}>
                             <input
