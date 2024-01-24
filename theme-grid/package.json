@@ -1,7 +1,7 @@
 {
   "name": "theme-grid",
   "homepage": "https://storybook.keycloakify.dev",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A starter/demo project for keycloakify",
   "repository": {
     "type": "git",

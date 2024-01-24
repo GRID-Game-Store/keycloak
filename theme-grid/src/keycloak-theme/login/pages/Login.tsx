@@ -8,6 +8,9 @@ import type { I18n } from "../i18n";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { Checkbox } from "../../components/ui/checkbox";
+import { Button } from "../../components/ui/button";
+import { FaceIcon, ImageIcon, SunIcon } from "@radix-ui/react-icons";
+import { GetIcon } from "../../components/ui/icon";
 
 const my_custom_param = new URL(window.location.href).searchParams.get(
   "my_custom_param"
@@ -102,6 +105,7 @@ export default function Login(
               onSubmit={onSubmit}
               action={url.loginAction}
               method="post"
+              
             >
               <div className={getClassName("kcFormGroupClass")}>
                 {!usernameHidden &&
@@ -167,43 +171,73 @@ export default function Login(
                     </div>
                   )}
                 </div>
-                <div className={getClassName("kcFormOptionsWrapperClass")}>
+                <div className={"pm-2"}>
                   {realm.resetPasswordAllowed && (
-                    <span>
-                      <a tabIndex={5} href={url.loginResetCredentialsUrl}>
+                    <p className="px-8 text-center text-sm text-muted-foreground ">
+                      <a
+                        href={url.loginResetCredentialsUrl}
+                        className="hover:text-brand underline underline-offset-4"
+                      >
                         {msg("doForgotPassword")}
                       </a>
-                    </span>
+                    </p>
                   )}
                 </div>
               </div>
-              <div id="kc-form-buttons" className={getClassName("kcFormGroupClass")}>
-                                <input
-                                    type="hidden"
-                                    id="id-hidden-input"
-                                    name="credentialId"
-                                    {...(auth?.selectedCredential !== undefined
-                                        ? {
-                                            "value": auth.selectedCredential
-                                        }
-                                        : {})}
-                                />
-                                <input
-                                    tabIndex={4}
-                                    className={clsx(
-                                        getClassName("kcButtonClass"),
-                                        getClassName("kcButtonPrimaryClass"),
-                                        getClassName("kcButtonBlockClass"),
-                                        getClassName("kcButtonLargeClass")
-                                    )}
-                                    name="login"
-                                    id="kc-login"
-                                    type="submit"
-                                    value={msgStr("doLogIn")}
-                                    disabled={isLoginButtonDisabled}
-                                />
-                            </div>
+              <div
+                id="kc-form-buttons"
+                className={getClassName("kcFormGroupClass")}
+              >
+                <input
+                  type="hidden"
+                  id="id-hidden-input"
+                  name="credentialId"
+                  {...(auth?.selectedCredential !== undefined
+                    ? {
+                        value: auth.selectedCredential,
+                      }
+                    : {})}
+                />
+                <div className="flex justify-center w-59px mt-2">
+                  <Button
+                    tabIndex={4}
+                    name="login"
+                    id="kc-login"
+                    type="submit"
+                    style={{width:"100%"}}
+                    disabled={isLoginButtonDisabled}
+                  >
+                    {msgStr("doLogIn")}
+                  </Button>
+                </div>
+              </div>
             </form>
+          )}
+
+          {realm.password && social.providers !== undefined && (
+            <div
+              id="kc-social-providers"
+            >
+              <ul
+              >
+                {social.providers.splice(0,1).map((p) => (
+                  <li
+                    key={p.providerId}
+                    className={"flex flex-row w-100 mt-2"}
+                  >
+                    <Button style={{width:"100%"}} className="flex flex-row justify-center mb-2" variant={"outline"} asChild>
+                      <a href={p.loginUrl} id={`zocial-${p.alias}`} >
+                        <GetIcon
+                          iconName={p.displayName.toLowerCase()}
+                          props={{}}
+                        />
+                        <span className="pl-1"  >{p.displayName}</span>
+                      </a>
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </div>
       </div>

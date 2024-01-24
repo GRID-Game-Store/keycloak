@@ -53,15 +53,89 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
       </a>
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Welcome back
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Enter your email to sign in to your account
-          </p>
+          {!(
+            auth !== undefined &&
+            auth.showUsername &&
+            !auth.showResetCredentials
+          ) ? (
+            displayRequiredFields ? (
+              <div className={getClassName("kcContentWrapperClass")}>
+                <div
+                  className={clsx(
+                    getClassName("kcLabelWrapperClass"),
+                    "subtitle"
+                  )}
+                >
+                  <span className="subtitle">
+                    <span className="required">*</span>
+                    {msg("requiredFields")}
+                  </span>
+                </div>
+                <div className="col-md-10">
+                  <h1 className="text-2xl font-semibold tracking-tight">
+                    {headerNode}
+                  </h1>
+                </div>
+              </div>
+            ) : (
+                <h1 className="text-2xl font-semibold tracking-tight">
+                    {headerNode}
+                </h1>
+            )
+          ) : displayRequiredFields ? (
+            <div className={getClassName("kcContentWrapperClass")}>
+              <div
+                className={clsx(
+                  getClassName("kcLabelWrapperClass"),
+                  "subtitle"
+                )}
+              >
+                <span className="subtitle">
+                  <span className="required">*</span> {msg("requiredFields")}
+                </span>
+              </div>
+              <div className="col-md-10">
+              
+                {showUsernameNode}
+                <div className={getClassName("kcFormGroupClass")}>
+                  <div id="kc-username">
+                    <label id="kc-attempted-username">
+                      {auth?.attemptedUsername}
+                    </label>
+                    <a id="reset-login" href={url.loginRestartFlowUrl}>
+                      <div className="kc-login-tooltip">
+                        <i className={getClassName("kcResetFlowIcon")}></i>
+                        <span className="kc-tooltip-text">
+                          {msg("restartLoginTooltip")}
+                        </span>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              {showUsernameNode}
+              <div className={getClassName("kcFormGroupClass")}>
+                <div id="kc-username">
+                  <label id="kc-attempted-username">
+                    {auth?.attemptedUsername}
+                  </label>
+                  <a id="reset-login" href={url.loginRestartFlowUrl}>
+                    <div className="kc-login-tooltip">
+                      <i className={getClassName("kcResetFlowIcon")}></i>
+                      <span className="kc-tooltip-text">
+                        {msg("restartLoginTooltip")}
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </>
+          )}
         </div>
         <div className={cn("grid gap-6")}>
-            
           {children}
           {auth !== undefined &&
             auth.showTryAnotherWayLink &&
@@ -82,14 +156,6 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
               </form>
             )}
         </div>
-        <p className="px-8 text-center text-sm text-muted-foreground">
-          <a
-            href="/register"
-            className="hover:text-brand underline underline-offset-4"
-          >
-            Don&apos;t have an account? Sign Up
-          </a>
-        </p>
       </div>
     </div>
   );
