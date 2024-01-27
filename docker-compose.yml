@@ -16,6 +16,7 @@ services:
     command: -v start-dev --import-realm --features=account3,declarative-user-profile
     volumes:
       - ./imports:/opt/keycloak/data/import/
+      - ./imports:/opt/keycloak/providers/
   keycloak-db:
     container_name: keycloak-db
     image: postgres:latest
