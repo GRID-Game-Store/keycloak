@@ -1,75 +1,96 @@
-import { useState, type FormEventHandler } from "react";
 import { clsx } from "keycloakify/tools/clsx";
-import { useConstCallback } from "keycloakify/tools/useConstCallback";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
-import { Checkbox } from "../../components/ui/checkbox";
 import { Button } from "../../components/ui/button";
-import { FaceIcon, ImageIcon, SunIcon } from "@radix-ui/react-icons";
-import { GetIcon } from "../../components/ui/icon";
-const my_custom_param = new URL(window.location.href).searchParams.get(
-    "my_custom_param"
-  );
-  if (my_custom_param !== null) {
-    console.log("my_custom_param:", my_custom_param);
-  }
-  
 
+export default function LoginResetPassword(
+  props: PageProps<
+    Extract<KcContext, { pageId: "login-reset-password.ftl" }>,
+    I18n
+  >
+) {
+  const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
-export default function LoginResetPassword(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>){
-    const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
-    const {
-        social,
-        realm,
-        url,
-        usernameHidden,
-        login,
-        auth,
-        registrationDisabled,
-      } = kcContext;
-      const { msg, msgStr } = i18n;
-      const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
-      const onSubmit = useConstCallback<FormEventHandler<HTMLFormElement>>((e) => {
-        e.preventDefault();
-    
-        setIsLoginButtonDisabled(true);
-    
-        const formElement = e.target as HTMLFormElement;
-    
-        //NOTE: Even if we login with email Keycloak expect username and password in
-        //the POST request.
-        formElement
-          .querySelector("input[name='email']")
-          ?.setAttribute("name", "username");
-    
-        formElement.submit();
-      });
-      return <Template
+  const { getClassName } = useGetClassName({
+    doUseDefaultCss,
+    classes,
+  });
+
+  const { url, realm, auth } = kcContext;
+
+  const { msg, msgStr } = i18n;
+
+  return (
+    <Template
       {...{ kcContext, i18n, doUseDefaultCss, classes }}
-      displayInfo={social.displayInfo}
-      displayWide={realm.password && social.providers !== undefined}
-      headerNode={msg("doLogIn")}
-      infoNode={
-        realm.password &&
-        realm.registrationAllowed &&
-        !registrationDisabled && (
-          <div id="kc-registration">
-            <span>
-              {msg("noAccount")}
-              <a tabIndex={6} href={url.registrationUrl}>
-                {msg("doRegister")}
-              </a>
-            </span>
-          </div>
-        )
-      }
+      displayMessage={false}
+      headerNode={msg("emailForgotTitle")}
+      infoNode={msg("emailInstruction")}
     >
-        <div>   </div>
-    </Template>
+      <form
+        id="kc-reset-password-form"
+        className={getClassName("kcFormClass")}
+        action={url.loginAction}
+        method="post"
+      >
+        <div className={getClassName("kcFormGroupClass")}>
+          <Label htmlFor={"username"}>
+            {!realm.loginWithEmailAllowed
+              ? msg("username")
+              : !realm.registrationEmailAsUsername
+              ? msg("usernameOrEmail")
+              : msg("email")}
+          </Label>
+          <Input
+            tabIndex={1}
+            type="text"
+            id="username"
+            name="username"
+            autoFocus
+            defaultValue={
+              auth !== undefined && auth.showUsername
+                ? auth.attemptedUsername
+                : undefined
+            }
+          />
+        </div>
 
-    
+        <div
+          className={clsx(
+            getClassName("kcFormGroupClass"),
+            getClassName("kcFormSettingClass")
+          )}
+        >
+          <div
+            id="kc-form-options"
+            className={getClassName("kcFormOptionsClass")}
+          >
+            <div className={getClassName("kcFormOptionsWrapperClass")}>
+              <p className="px-8 text-center text-sm text-muted-foreground pt-2 pb-2">
+                <a
+                  href={url.loginUrl}
+                  className="hover:text-brand underline underline-offset-4"
+                >
+                  {msg("backToLogin")}
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div
+            id="kc-form-buttons"
+            className={getClassName("kcFormButtonsClass")}
+          >
+            <Button tabIndex={4} type="submit" style={{ width: "100%" }}>
+              {msgStr("doSubmit")}
+            </Button>
+          </div>
+        </div>
+      </form>
+    </Template>
+  );
 }

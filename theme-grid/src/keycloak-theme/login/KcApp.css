@@ -48,7 +48,7 @@
 	  --ring: 142.4 71.8% 29.2%;
 	}
   }
- 
+  @import url('https://fonts.googleapis.com/css2?family=Ropa+Sans:ital@0;1&display=swap');
 @layer base {
   * {
     @apply border-border;

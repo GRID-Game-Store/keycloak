@@ -1,6 +1,6 @@
 // Copy pasted from: https://github.com/InseeFrLab/keycloakify/blob/main/src/login/Template.tsx
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
 import { usePrepareTemplate } from "keycloakify/lib/usePrepareTemplate";
@@ -12,6 +12,13 @@ import keycloakifyLogoPngUrl from "./assets/keycloakify-logo.png";
 import { PUBLIC_URL } from "../../PUBLIC_URL";
 import { Button, buttonVariants } from "../components/ui/button";
 import { cn } from "../lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
+
+interface IAlertProps {
+  hading: string;
+  description: string;
+}
+
 export default function Template(props: TemplateProps<KcContext, I18n>) {
   const {
     displayInfo = false,
@@ -39,6 +46,16 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
   useState(() => {
     document.title = i18n.msgStr("loginTitle", kcContext.realm.displayName);
   });
+  const AlertUI: React.FC<IAlertProps> = ({ hading, description }) => {
+    return (
+      <Alert variant="destructive" className="fixed bottom-0 w-100 right-2">
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>
+          You can add components and dependencies to your app using the cli.
+        </AlertDescription>
+      </Alert>
+    );
+  };
 
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
@@ -65,12 +82,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                     getClassName("kcLabelWrapperClass"),
                     "subtitle"
                   )}
-                >
-                  <span className="subtitle">
-                    <span className="required">*</span>
-                    {msg("requiredFields")}
-                  </span>
-                </div>
+                ></div>
                 <div className="col-md-10">
                   <h1 className="text-2xl font-semibold tracking-tight">
                     {headerNode}
@@ -78,9 +90,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                 </div>
               </div>
             ) : (
-                <h1 className="text-2xl font-semibold tracking-tight">
-                    {headerNode}
-                </h1>
+              <h1 className="text-2xl font-semibold tracking-tight">
+                {headerNode}
+              </h1>
             )
           ) : displayRequiredFields ? (
             <div className={getClassName("kcContentWrapperClass")}>
@@ -95,7 +107,6 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                 </span>
               </div>
               <div className="col-md-10">
-              
                 {showUsernameNode}
                 <div className={getClassName("kcFormGroupClass")}>
                   <div id="kc-username">
@@ -137,6 +148,43 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         </div>
         <div className={cn("grid gap-6")}>
           {children}
+          {displayMessage &&
+            message !== undefined &&
+            (message.type !== "warning" || !isAppInitiatedAction) && (
+              <div>
+                {message.type === "success" && (
+                  <AlertUI
+                    hading={"Success"}
+                    description={getClassName("kcFeedbackSuccessIcon")}
+                  />
+                )}
+                {message.type === "warning" && (
+                  <AlertUI
+                    hading={"Warning"}
+                    description={getClassName("kcFeedbackWarningIcon")}
+                  />
+                )}
+                {message.type === "error" && (
+                  <AlertUI
+                    hading={"Error"}
+                    description={getClassName("kcFeedbackErrorIcon")}
+                  />
+                )}
+                {message.type === "info" && (
+                  <AlertUI
+                    hading={"Info"}
+                    description={getClassName("kcFeedbackInfoIcon")}
+                  />
+                )}
+                <span
+                  className="kc-feedback-text"
+                  dangerouslySetInnerHTML={{
+                    __html: message.summary,
+                  }}
+                />
+              </div>
+            )}
+
           {auth !== undefined &&
             auth.showTryAnotherWayLink &&
             showAnotherWayIfPresent && (
